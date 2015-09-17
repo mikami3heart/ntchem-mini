@@ -2,8 +2,8 @@
 NTChem-mini
 =============
 
-* version: 1.1 (based on NTChem/RI-MP2 dated 2014/10/31)
-* update: 2014/12/28 (bug fix rimp2_rmp2energy_incore_v_mpiomp.F90)
+* version: 1.2 (based on NTChem/RI-MP2 dated 2014/10/31)
+* update: 2015/9/17
 * contact: miniapp@riken.jp
 
 About NTChem and NTChem-mini
