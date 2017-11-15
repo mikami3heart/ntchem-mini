@@ -453,6 +453,9 @@
 !
                      WTimeBgn = MPI_WTIME()
                      CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+                     call f_pm_start ("4c Ints")
+#endif
                      ! DGEMM ( TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB, BETA, C, LDC )
 #ifdef USE_GPU
                      ! wait for previous send to complete
@@ -503,6 +506,9 @@
                      count_dgemm = count_dgemm + 1  ! debug
                      CALL CPU_TIME(TimeEnd)
                      WTimeEnd = MPI_WTIME()
+#ifdef PMLIB
+                     call f_pm_stop ("4c Ints", 0.0d0, 0)
+#endif
                      Time_MOI = Time_MOI + TimeEnd - TimeBgn
                      WTime_MOI = WTime_MOI + WTimeEnd - WTimeBgn
                   endif
@@ -584,6 +590,9 @@
 !
                      WTimeBgn = MPI_WTIME()
                      CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+                     call f_pm_start ("EMP2 corr.")
+#endif
                      !
                      do Ib_1 = 1, lenB
                         do Ia_1 = 1, lenA
@@ -625,6 +634,9 @@
                         end DO
                      end DO
                      !
+#ifdef PMLIB
+                     call f_pm_stop ("EMP2 corr.", 0.0d0, 0)
+#endif
                      CALL CPU_TIME(TimeEnd)
                      WTimeEnd = MPI_WTIME()
                      Time_EMP2 = Time_EMP2 + TimeEnd - TimeBgn

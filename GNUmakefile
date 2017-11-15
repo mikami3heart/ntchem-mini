@@ -27,7 +27,8 @@ make_src:
 	(cd ./src; $(MAKE))
 
 copy_bin:
-	find ./tests -name "*" -type d -exec $(CP) $(BIN)/*.exe {} \;
+	@printf " skip copying"
+	#	find ./tests -name "*" -type d -exec $(CP) $(BIN)/*.exe {} \;
 
 $(BIN):
 	$(MKDIR) -p $(BIN)

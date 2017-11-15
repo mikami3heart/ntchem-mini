@@ -1,53 +1,37 @@
-
              TARGET = LINUX64
-
-             DMACRO = 
-#             DMACRO+=-DSUPPORT_R16
-#             DMACRO+=-DHAVE_ERF
-
+             ##	DMACRO = -DPMLIB	# set this option if linking PMlib
+             DMACRO =
                 INC = -I$(INCLUDE) -I$(LOCALINC)
                 MOD = -module $(LOCALINC) 
 	     INCMOD = $(INC) $(MOD)
-
-#           FCONVERT = 
 	    
-               F77C = mpiifort
-###           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
-###      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
-###           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
-###      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
-           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
-      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
+               F77C = mpif77
+           F77FLAGS = $(DMACRO) $(INCMOD) -O3 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
+      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -O0 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
 
-               F90C = mpiifort
-###           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
-###      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
-###           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
-###      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
-           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
-      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
+               F90C = mpif90
+           F90FLAGS = $(DMACRO) $(INCMOD) -O3 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
+      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -O0 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
 
           MODSUFFIX = mod
 
                  CC = icc
-###             CFLAGS = $(INC) -O2
-###             CFLAGS = $(INC) -O2 -heap-arrays -parallel -par-report2
-             CFLAGS = $(INC) -O3 -heap-arrays
+             CFLAGS = $(INC) -O3
 
-	        CXX = icc
-###           CXXFLAGS = $(INC) -O2 -parallel -par-report2
+	        CXX = icpc
            CXXFLAGS = $(INC) -O3
              CXXLIB = -cxxlib
 
              MPILIB = 
-           MPIFLAGS = -DMPIINT8
+           ##	MPIFLAGS = -DMPIINT8 	# this option may conflict with other libraries
+           MPIFLAGS =
          MPILDFLAGS =
 
-           OMPFLAGS = -openmp
-         OMPLDFLAGS = -openmp
+           OMPFLAGS = -qopenmp
+         OMPLDFLAGS = -qopenmp
 
-                 LD = mpiifort
-            LDFLAGS = -L$(LIB) $(MPILIB)
+                 LD = mpif90
+            LDFLAGS = -L$(LIB) $(OMPFLAGS) $(MOD) $(EXTRA_LDFLAGS)
      LDFLAGS_NOMAIN = -nofor_main
 
                  AR = ar

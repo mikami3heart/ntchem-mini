@@ -199,8 +199,8 @@
          IF (MOD(KK, NProcsMO) /= MyRankMO) CYCLE
 !MPI parallel
 
-!#ifdef DEBUG
-#if 1
+#ifdef DEBUG
+!#if 1
          if ( MyRank == 0 ) then
             write(*,'(a,i6,a,i6)') "# KK = ", KK, ", NShel_RI = ", NShel_RI
          endif
@@ -208,6 +208,9 @@
 
          WTimeBgn = MPI_WTIME()
          CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+         call f_pm_start("3c-RIInt")
+#endif
 !
          IAnglC = KType_RI(KK)
          IF (Spherical) THEN
@@ -433,6 +436,9 @@
          WTimeEnd = MPI_WTIME()
          Time_T0 = Time_T0 + TimeEnd - TimeBgn
          WTime_T0 = WTime_T0 + WTimeEnd - WTimeBgn
+#ifdef PMLIB
+         call f_pm_stop ("3c-RIInt", 0.0d0, 0)
+#endif
 !
          IF (Spherical) THEN
             LabelK = KLoc_RI_Sph(KK) 
@@ -474,6 +480,9 @@
             WTimeEnd = MPI_WTIME()
             Time_T0C = Time_T0C + TimeEnd - TimeBgn
             WTime_T0C = WTime_T0C + WTimeEnd - WTimeBgn
+#ifdef PMLIB
+            call f_pm_start("1/3 tran3c1")
+#endif
 !
 !           o 1/3 integral transformation
 !                (pq|c) -> (iq|c)
@@ -505,6 +514,9 @@
             WTimeEnd = MPI_WTIME()
             Time_T1 = Time_T1 + TimeEnd - TimeBgn
             WTime_T1 = WTime_T1 + WTimeEnd - WTimeBgn
+#ifdef PMLIB
+            call f_pm_stop ("1/3 tran3c1", 0.0d0, 0)
+#endif
 !
 !           o 2/3 integral transformation
 !               (iq|c) -> (ia|c)
@@ -513,6 +525,9 @@
             ! if ( MyRank == 0 ) then
             !    write(*,'(a,i4,a,3i6)') "  K=",K, ", 2/3, (m,n,k)=", NActO(1), NActV(1), NBF
             ! endif
+#endif
+#ifdef PMLIB
+            call f_pm_start("2/3 tran3c1")
 #endif
             WTimeBgn = MPI_WTIME()
             CALL CPU_TIME(TimeBgn)
@@ -536,6 +551,9 @@
             WTimeEnd = MPI_WTIME()
             Time_T2 = Time_T2 + TimeEnd - TimeBgn
             WTime_T2 = WTime_T2 + WTimeEnd - WTimeBgn
+#ifdef PMLIB
+            call f_pm_stop ("2/3 tran3c1", 0.0d0, 0)
+#endif
          END DO
 !
       END DO
@@ -583,6 +601,7 @@
       write(*,'(a,i6,F12.2)') "# ", MyRank, WTime_T0
 #endif
       call MPI_Barrier( MPI_COMM_WORLD, IErr )
+
 !
       IF (MyRank == 0) THEN
          PRINT '(" ..... CPU time (3c-RIInt        ) :", F12.2)', Time_T0

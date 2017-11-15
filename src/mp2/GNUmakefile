@@ -17,7 +17,7 @@ NVLIB=-L/usr/apps.sp3/cuda/6.0/lib64 -lcudart -lcublas
 #F90EXT=-DUSE_MERGE -DUSE_GPU
 F90EXT=-DUSE_MERGE -DUSE_GPU -DDEBUG 
 else
-F90EXT=-DDEBUG
+#F90EXT=-DDEBUG
 #F90EXT=-DUSE_MERGE
 #F90EXT=-DUSE_MERGE -DDEBUG
 endif
@@ -132,7 +132,7 @@ program : $(modules) $(objects)
 	../parallel_mod/*.o \
 	$(OMPLDFLAGS) $(MPILDFLAGS) $(NVLIB) \
 	$(LAPACKLIB) $(BLASLIB) $(ATLASLIB) \
-	-o $(program)
+	-o $(program) $(EXTRA_LDFLAGS)
 
 mvbin :
 	$(MV) $(program) $(BIN)/.

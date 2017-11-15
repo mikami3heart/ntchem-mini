@@ -1,0 +1,6 @@
+2017年 11月 15日 水曜日 20:11:01 JST
+mikami
+hokusai1
+Linux
+./config/configure --lapack=-mkl --blas=-mkl linux64_mpiifort_omp
+

@@ -86,7 +86,13 @@
       END IF
       WTimeBgn = MPI_WTIME()
       CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+      call f_pm_start ("RIInt2_MDInt2c")
+#endif
       CALL RIMP2_RIInt2_MDInt2_Int2c_MPIOMP
+#ifdef PMLIB
+      call f_pm_stop ("RIInt2_MDInt2c", 0.0d0, 0)
+#endif
       CALL CPU_TIME(TimeEnd)
       WTimeEnd = MPI_WTIME()
       IF (MyRank == 0) THEN
@@ -103,7 +109,13 @@
       END IF
       WTimeBgn = MPI_WTIME()
       CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+      call f_pm_start ("RIInt2_Inv2c")
+#endif
       CALL RIMP2_Inv2c_MPI
+#ifdef PMLIB
+      call f_pm_stop ("RIInt2_Inv2c", 0.0d0, 0)
+#endif
       CALL CPU_TIME(TimeEnd)
       WTimeEnd = MPI_WTIME()
       IF (MyRank == 0) THEN
@@ -298,6 +310,9 @@
 !
                WTimeBgn = MPI_WTIME()
                CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+               call f_pm_start ("3/3 tran3c2 tran")
+#endif
 #ifdef USE_GPU
                id_st = mod(id_st, Num_Stream) + 1
                call cublas_set_matrix_async( lk, ln, T2Int(1,1,I,id_buf), lk, devptr_B(id_st), lk, id_st )
@@ -315,6 +330,9 @@
                     RI2cInv(1,ibgn+(J-1)), NBF_RI, &
                     T2Int(1,1,I,id_buf), NBF_RI, Zero, &
                     RIInt3c3a(J,Ia), idim )
+#endif
+#ifdef PMLIB
+               call f_pm_stop ("3/3 tran3c2 tran", 0.0d0, 0)
 #endif
                CALL CPU_TIME(TimeEnd)
                WTimeEnd = MPI_WTIME()

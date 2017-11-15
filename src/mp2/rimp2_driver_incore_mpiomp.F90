@@ -43,6 +43,9 @@
       END IF
       WTimeBgn = MPI_WTIME()
       CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+      call f_pm_start("RIMP2_Tran3c1")
+#endif
 !
       KBF_RI = 0
 !MPI parallel
@@ -68,6 +71,9 @@
       CALL MPI_Barrier(MPI_COMM_WORLD, IErr)
       CALL CPU_TIME(TimeEnd)
       WTimeEnd = MPI_WTIME()
+#ifdef PMLIB
+      call f_pm_stop ("RIMP2_Tran3c1", 0.0d0, 0)
+#endif
       IF (MyRank == 0) THEN
          PRINT '(" ...   CPU time (RIMP2_Tran3c1   ) :", F12.2)', TimeEnd - TimeBgn
          PRINT '(" ...   WALL time (RIMP2_Tran3c1   ) :", F12.2)', WTimeEnd - WTimeBgn
@@ -80,6 +86,9 @@
       END IF
       WTimeBgn = MPI_WTIME()
       CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+      call f_pm_start ("RIMP2_Tran3c2")
+#endif
 !
       LenOccBat_per_Proc = LenOccBat * NOccBat_per_Proc
       NBF_RI_per_ProcMat = NBF_RI / NProcsMat
@@ -89,6 +98,9 @@
       ALLOCATE(RIInt3c3a(NBF_RI_per_ProcMat*NActO(1),LenOccBat_per_Proc))
       CALL RIMP2_Tran3c2_InCore_V_MPIOMP
       CALL MPI_Barrier(MPI_COMM_WORLD, IErr)
+#ifdef PMLIB
+      call f_pm_stop ("RIMP2_Tran3c2", 0.0d0, 0)
+#endif
       CALL CPU_TIME(TimeEnd)
       WTimeEnd = MPI_WTIME()
       IF (MyRank == 0) THEN
@@ -109,7 +121,13 @@
       END IF
       WTimeBgn = MPI_WTIME()
       CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+      call f_pm_start ("RIMP2_RMP2Energy")
+#endif
       CALL RIMP2_RMP2Energy_InCore_V_MPIOMP
+#ifdef PMLIB
+      call f_pm_stop ("RIMP2_RMP2Energy", 0.0d0, 0)
+#endif
       CALL CPU_TIME(TimeEnd)
       WTimeEnd = MPI_WTIME()
       IF (MyRank == 0) THEN

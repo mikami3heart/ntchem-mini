@@ -1,14 +1,14 @@
 #
-           NTQC_TOP = /home/ra000004/mikami/ntchem/ntchem-mini-1.1
-          LAPACKLIB = 
-            BLASLIB = 
-           ATLASLIB = -mkl
-           HOSTTYPE = linux64_mpif90_omp_intel_proto
+           NTQC_TOP = /home/mikami/ntchem/ntchem-mini-develop
+          LAPACKLIB = -mkl
+            BLASLIB = -mkl
+           ATLASLIB = 
+           HOSTTYPE = linux64_mpiifort_omp
 
-                BIN = /home/ra000004/mikami/ntchem/ntchem-mini-1.1/bin
-                LIB = /home/ra000004/mikami/ntchem/ntchem-mini-1.1/lib
-            INCLUDE = /home/ra000004/mikami/ntchem/ntchem-mini-1.1/include
-              TESTS = /home/ra000004/mikami/ntchem/ntchem-mini-1.1/tests
+                BIN = /home/mikami/ntchem/ntchem-mini-develop/bin
+                LIB = /home/mikami/ntchem/ntchem-mini-develop/lib
+            INCLUDE = /home/mikami/ntchem/ntchem-mini-develop/include
+              TESTS = /home/mikami/ntchem/ntchem-mini-develop/tests
             SCRATCH = /home/mikami/scr/ntchem
            LOCALBIN = .
            LOCALLIB = .
@@ -17,18 +17,18 @@
 
      LDFLAGS_NOMAIN = 
              TARGET = LINUX64
-             DMACRO = 
+             DMACRO = -DPMLIB
                 INC = -I$(INCLUDE) -I$(LOCALINC)
                 MOD = -module $(LOCALINC) 
 	     INCMOD = $(INC) $(MOD)
 	    
                F77C = mpif77
-           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
-      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O0 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
+           F77FLAGS = $(DMACRO) $(INCMOD) -O3 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
+      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -O0 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
 
                F90C = mpif90
-           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
-      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O0 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
+           F90FLAGS = $(DMACRO) $(INCMOD) -O3 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
+      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -O0 -fpp -ftz -assume byterecl -warn nousage -heap-arrays
 
           MODSUFFIX = mod
 
@@ -40,14 +40,15 @@
              CXXLIB = -cxxlib
 
              MPILIB = 
-           MPIFLAGS = -DMPIINT8 
+           #	MPIFLAGS = -DMPIINT8 
+           MPIFLAGS = 
          MPILDFLAGS =
 
-           OMPFLAGS = -openmp
-         OMPLDFLAGS = -openmp
+           OMPFLAGS = -qopenmp
+         OMPLDFLAGS = -qopenmp
 
                  LD = mpif90
-            LDFLAGS = -L$(LIB)
+            LDFLAGS = -L$(LIB) $(OMPFLAGS) $(MOD) $(EXTRA_LDFLAGS)
      LDFLAGS_NOMAIN = -nofor_main
 
                  AR = ar

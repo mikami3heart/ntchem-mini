@@ -14,7 +14,11 @@
 !
 !     o Initialize MPI
 !
+
       CALL Util_InitMPI(.TRUE.)
+#ifdef PMLIB
+	call f_pm_warmup
+#endif
 !
 !     o Read MP2 input
 !
@@ -92,9 +96,44 @@
       CALL MP2_Deallocate
       CALL MP2_Basis_Deallocate
       CALL RIMP2_Basis_Deallocate
+
+#ifdef PMLIB
+	call f_pm_posttrace ()
+	call f_pm_print ("", 0)
+	call f_pm_printdetail ("", 0, 0)
+#endif
 !
 !     o Finalize MPI
 !
       CALL Util_FinMPI
 !
       END PROGRAM
+
+
+#ifdef PMLIB
+      subroutine f_pm_warmup
+      nWatch=100
+      call f_pm_initialize (nWatch)
+      icalc=1
+      icomm=0
+      iexclusive=1
+      inclusive=0    !cx i.e. not exclusive
+	call f_pm_setproperties("RIMP2_Tran3c1", icalc, inclusive)
+	call f_pm_setproperties("RIMP2_Tran3c2", icalc, inclusive)
+	call f_pm_setproperties("RIMP2_RMP2Energy", icalc, inclusive)
+
+	call f_pm_setproperties("3c-RIInt", icalc, iexclusive)
+	call f_pm_setproperties("1/3 tran3c1", icalc, iexclusive)
+	call f_pm_setproperties("2/3 tran3c1", icalc, iexclusive)
+
+	call f_pm_setproperties("RIInt2c calc", icalc, iexclusive)
+
+	call f_pm_setproperties("RIInt2_MDInt2c", icalc, iexclusive)
+	call f_pm_setproperties("RIInt2_Inv2c", icalc, iexclusive)
+	call f_pm_setproperties("3/3 tran3c2 tran", icalc, iexclusive)
+
+	call f_pm_setproperties("4c Ints", icalc, iexclusive)
+	call f_pm_setproperties("EMP2 corr.", icalc, iexclusive)
+
+      end subroutine
+#endif

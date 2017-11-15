@@ -1,9 +1,9 @@
 #
-export NTQC_TOP=/home/ra000004/mikami/ntchem/ntchem-mini-1.1
-export HOSTTYPE=linux64_mpif90_omp_intel_proto
-export LAPACK=
-export BLAS=
-export ATLAS=-mkl
+export NTQC_TOP=/home/mikami/ntchem/ntchem-mini-develop
+export HOSTTYPE=linux64_mpiifort_omp
+export LAPACK=-mkl
+export BLAS=-mkl
+export ATLAS=
 export SCRATCH=/home/mikami/scr/ntchem
 export PARALLEL=mpiomp
 #

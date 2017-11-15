@@ -41,6 +41,9 @@
 !
       WTimeBgn = MPI_WTIME()
       CALL CPU_TIME(TimeBgn)
+#ifdef PMLIB
+      call f_pm_start ("RIInt2c calc")
+#endif
 !
 !$OMP PARALLEL DEFAULT(SHARED) &
 !$OMP&PRIVATE(II, IAtomA, ACentX, ACentY, ACentZ, I, IPrim1, IPrim2, ITemp, &
@@ -220,6 +223,9 @@
       CALL Int2_Array_Deallocate
       DEALLOCATE(FF)
 !$OMP END PARALLEL
+#ifdef PMLIB
+      call f_pm_stop ("RIInt2c calc", 0.0d0, 0)
+#endif
       CALL CPU_TIME(TimeEnd)
       WTimeEnd = MPI_WTIME()
       Time_RIInt2c = TimeEnd - TimeBgn

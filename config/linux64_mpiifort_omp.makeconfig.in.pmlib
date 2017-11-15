@@ -1,6 +1,5 @@
              TARGET = LINUX64
-             ##	DMACRO = -DPMLIB	# set this option if linking PMlib
-             DMACRO =
+             DMACRO = -DPMLIB
                 INC = -I$(INCLUDE) -I$(LOCALINC)
                 MOD = -module $(LOCALINC) 
 	     INCMOD = $(INC) $(MOD)
@@ -23,8 +22,8 @@
              CXXLIB = -cxxlib
 
              MPILIB = 
-           ##	MPIFLAGS = -DMPIINT8 	# this option may conflict with other libraries
-           MPIFLAGS =
+           #	MPIFLAGS = -DMPIINT8 
+           MPIFLAGS = 
          MPILDFLAGS =
 
            OMPFLAGS = -qopenmp

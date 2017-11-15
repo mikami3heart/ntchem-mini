@@ -1,6 +1,6 @@
 # Makefile for util_lib
 #                     03 Sep 2007 Written  by Takahito Nakajima
-#                     28 Sep 2012 Modified by Michio Katouda
+#                     18 Dec 2014 Modified by Michio Katouda
 #
 include ../../config/makeconfig
 
@@ -10,6 +10,8 @@ util_matout.o \
 util_transchar.o \
 util_tr1to2.o \
 util_lowtrmzero.o \
+util_hwc_start.o \
+util_hwc_stop.o \
 
 objects_mpi = \
 util_abortmpi.o \
